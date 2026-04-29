@@ -3,32 +3,22 @@ package com.ngikanmania;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class NgikanMania extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+public class NgikanMania extends Game {
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
-    }
-
-    @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+        // Init Singleton Assets explicitly
+        Assets.getInstance();
+        // State Pattern: Delegate rendering to the PlayScreen State
+        this.setScreen(new PlayScreen());
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        image.dispose();
+        super.dispose(); // disposes the active screen
+        Assets.getInstance().dispose();
     }
 }
