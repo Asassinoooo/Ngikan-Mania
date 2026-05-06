@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.core;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Color;
@@ -48,6 +54,8 @@ public class PlayScreen implements Screen, FishObserver {
     private final com.badlogic.gdx.utils.Array<BaseFish> activeFishes;
     private final com.badlogic.gdx.utils.Pool<Coin> coinPool;
     private final com.badlogic.gdx.utils.Array<Coin> activeCoins;
+    private final com.badlogic.gdx.utils.Pool<NetEffect> netPool;
+    private final com.badlogic.gdx.utils.Array<NetEffect> activeNets;
     private float fishSpawnTimer = 0f;
 
     // Movement Strategies for fishes
@@ -114,6 +122,14 @@ public class PlayScreen implements Screen, FishObserver {
             }
         };
         activeCoins = new com.badlogic.gdx.utils.Array<>();
+
+        netPool = new com.badlogic.gdx.utils.Pool<NetEffect>() {
+            @Override
+            protected NetEffect newObject() {
+                return new NetEffect();
+            }
+        };
+        activeNets = new com.badlogic.gdx.utils.Array<>();
 
         // Initialize Movement Strategies
         linearMovement = new LinearMovement();
@@ -198,8 +214,28 @@ public class PlayScreen implements Screen, FishObserver {
             for (int j = activeFishes.size - 1; j >= 0; j--) {
                 BaseFish fish = activeFishes.get(j);
                 if (b.bounds.overlaps(fish.bounds)) {
-                    // Start collision calculation sequences
-                    handleCollision(fish);
+                    // Start collision calculation sequences (AoE)
+                    float aoeRadius = 45f; // 90x90 total diameter (3x larger)
+                    
+                    // Visual Effect
+                    NetEffect net = netPool.obtain();
+                    net.init(b.position.x, b.position.y, aoeRadius);
+                    activeNets.add(net);
+                    
+                    // AoE Hit detection (Rectangle overlap is much more reliable for large fishes)
+                    com.badlogic.gdx.math.Rectangle aoeRect = new com.badlogic.gdx.math.Rectangle(
+                        b.position.x - aoeRadius, 
+                        b.position.y - aoeRadius, 
+                        aoeRadius * 2f, 
+                        aoeRadius * 2f
+                    );
+                    
+                    for (int k = activeFishes.size - 1; k >= 0; k--) {
+                        BaseFish target = activeFishes.get(k);
+                        if (aoeRect.overlaps(target.bounds)) {
+                            handleCollision(target);
+                        }
+                    }
                     
                     // Remove bullet and free it
                     activeBullets.removeIndex(i);
@@ -244,6 +280,16 @@ public class PlayScreen implements Screen, FishObserver {
             }
         }
 
+        // Update active nets
+        for (int i = activeNets.size - 1; i >= 0; i--) {
+            NetEffect net = activeNets.get(i);
+            boolean isAlive = net.update(delta);
+            if (!isAlive) {
+                activeNets.removeIndex(i);
+                netPool.free(net);
+            }
+        }
+
         assets.batch.begin();
         
         // Render ocean background
@@ -270,6 +316,11 @@ public class PlayScreen implements Screen, FishObserver {
         // Render bullets
         for (Bullet b : activeBullets) {
             b.draw(assets.batch, bulletTex);
+        }
+
+        // Render nets over bullets and fishes
+        for (NetEffect net : activeNets) {
+            net.draw(assets.batch);
         }
         
         // Render the cannon sprite rotating around its center to face the cursor
@@ -301,6 +352,10 @@ public class PlayScreen implements Screen, FishObserver {
 
             for (BaseFish fish : activeFishes) {
                 shapeRenderer.rect(fish.bounds.x, fish.bounds.y, fish.bounds.width, fish.bounds.height);
+            }
+
+            for (NetEffect net : activeNets) {
+                shapeRenderer.rect(net.position.x - net.radius, net.position.y - net.radius, net.radius * 2f, net.radius * 2f);
             }
 
             // Hitbox matches true rendered size: width is scaled by cannonScaleX, not the full square
@@ -510,3 +565,4 @@ public class PlayScreen implements Screen, FishObserver {
         }
     }
 }
+

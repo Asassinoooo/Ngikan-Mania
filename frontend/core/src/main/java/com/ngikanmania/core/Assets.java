@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.core;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +27,7 @@ public class Assets {
     public Animation<TextureRegion> lionfishAnimation;
     public Animation<TextureRegion> mantaAnimation;
     public Animation<TextureRegion> coinAnimation;
+    public Texture simpleNetTexture;
     public Texture backgroundTexture;
     private final com.badlogic.gdx.utils.Array<Texture> textureDisposeList;
 
@@ -104,6 +111,10 @@ public class Assets {
         coinFrames.add(new TextureRegion(c3));
         
         coinAnimation = new Animation<>(0.1f, coinFrames, Animation.PlayMode.LOOP);
+
+        // Load the simple white pixel art net sprite
+        simpleNetTexture = new Texture("net.png");
+        textureDisposeList.add(simpleNetTexture);
     }
 
     public static Assets getInstance() {
@@ -122,3 +133,4 @@ public class Assets {
         }
     }
 }
+

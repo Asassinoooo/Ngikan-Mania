@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.observer;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -160,3 +166,4 @@ public class Scoreboard implements FishObserver {
         return commandQueue;
     }
 }
+

@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.command;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 /**
  * Command Pattern: Event encapsulated for catching a fish.
@@ -19,3 +25,4 @@ public class CatchFishCommand implements GameActionCommand {
         System.out.println("Command Executed: Fish Caught! Type: " + fishType + ", Points: " + pointsAwarded);
     }
 }
+

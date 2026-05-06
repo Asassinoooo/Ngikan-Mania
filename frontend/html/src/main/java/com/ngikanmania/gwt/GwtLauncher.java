@@ -3,7 +3,7 @@ package com.ngikanmania.gwt;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.ngikanmania.NgikanMania;
+import com.ngikanmania.core.NgikanMania;
 
 /** Launches the GWT application. */
 public class GwtLauncher extends GwtApplication {

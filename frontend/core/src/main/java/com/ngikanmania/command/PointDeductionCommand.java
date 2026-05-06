@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.command;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 /**
  * Command Pattern: Event encapsulated for deducting points when a bullet is fired.
@@ -15,3 +21,4 @@ public class PointDeductionCommand implements GameActionCommand {
         System.out.println("Command Executed: Deducted " + pointsDeducted + " points for firing bullet.");
     }
 }
+

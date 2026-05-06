@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.strategy;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 /**
  * Strategy Pattern: Sinusoidal movement
@@ -24,3 +30,4 @@ public class SinusoidalMovement implements IMovementStrategy {
                  entity.position.y < -200f || entity.position.y > 920f);
     }
 }
+

@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.command;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 /**
  * Command Pattern: Event encapsulated for firing a bullet.
@@ -20,3 +26,4 @@ public class FireBulletCommand implements GameActionCommand {
         System.out.println("Command Executed: Fired Bullet from (" + startX + ", " + startY + ")");
     }
 }
+

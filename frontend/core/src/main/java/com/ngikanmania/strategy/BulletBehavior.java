@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.strategy;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 /**
  * Strategy Pattern: Defines the movement and collision behavior of a bullet.
@@ -14,3 +20,4 @@ public interface BulletBehavior {
      */
     boolean update(Bullet bullet, float delta, float worldWidth, float worldHeight);
 }
+

@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.strategy;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 import com.badlogic.gdx.math.MathUtils;
 
@@ -47,3 +53,4 @@ public class BouncingBehavior implements BulletBehavior {
         return true; // Keep active
     }
 }
+

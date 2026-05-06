@@ -1,4 +1,10 @@
-package com.ngikanmania;
+package com.ngikanmania.entity;
+
+import com.ngikanmania.core.*;
+import com.ngikanmania.entity.*;
+import com.ngikanmania.strategy.*;
+import com.ngikanmania.command.*;
+import com.ngikanmania.observer.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -90,3 +96,4 @@ public class Bullet implements Poolable {
         behavior = null;
     }
 }
+
