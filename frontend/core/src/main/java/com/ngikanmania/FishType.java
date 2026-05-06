@@ -3,9 +3,9 @@ package com.ngikanmania;
 import com.badlogic.gdx.graphics.Color;
 
 public enum FishType {
-    SMALL(32f, 0.1f, 5, 10, Color.GREEN, 10),
-    MEDIUM(64f, 0.02f, 2, 3, Color.YELLOW, 50),
-    LARGE(128f, 0.005f, 1, 1, Color.RED, 200);
+    SMALL(40f, 0.1f, 5, 10, Color.GREEN, 10),
+    MEDIUM(80f, 0.02f, 2, 3, Color.YELLOW, 50),
+    LARGE(160f, 0.005f, 1, 1, Color.RED, 200);
 
     public final float size;
     public final float deathProbability;

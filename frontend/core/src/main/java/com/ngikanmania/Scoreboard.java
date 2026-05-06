@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class Scoreboard implements FishObserver {
 
     public Scoreboard() {
         commandQueue = new ArrayList<>();
-        stage = new Stage(new ScreenViewport());
+        // Use FitViewport matching the game's 1280x720 virtual resolution so world coordinates perfectly map to UI
+        stage = new Stage(new FitViewport(1280f, 720f));
 
         points = 200f; // Unified points variable starting at 200
 
@@ -48,12 +50,14 @@ public class Scoreboard implements FishObserver {
         Label.LabelStyle defaultStyle = new Label.LabelStyle(font, Color.WHITE);
 
         pointsLabel = new Label("Points: " + (int)points, defaultStyle);
+        pointsLabel.setFontScale(1.5f); // Scale font size to be much larger
 
         Table topTable = new Table();
         topTable.top();
         topTable.setFillParent(true);
 
-        topTable.add(pointsLabel).expandX().align(Align.right).padRight(20).padTop(20);
+        // Align between center and right corner by providing a massive right padding
+        topTable.add(pointsLabel).expandX().align(Align.right).padRight(100).padTop(30);
 
         stage.addActor(topTable);
 
@@ -89,23 +93,26 @@ public class Scoreboard implements FishObserver {
     @Override
     public void onFishCaught(CatchEvent event) {
         int earned = event.points;
-        points += earned;
-        pointsLabel.setText("Points: " + (int)points);
 
         // Command Logic mapping Enum natively safely via String reconstruction bounds
         FishType parsedType = FishType.valueOf(event.fishTypeName);
         GameActionCommand catchCmd = new CatchFishCommand(parsedType, earned);
         catchCmd.execute();
         commandQueue.add(catchCmd);
+    }
 
-        // Visual Feedback (floating text) mapped precisely without relying on GC culled entity memory references
+    public void onCoinCollected(int value) {
+        points += value;
+        pointsLabel.setText("Points: " + (int)points);
+
         FloatingText ft = floatingTextPool.obtain();
-        ft.text = "+" + earned;
-        ft.x = event.x + 16f; // Roughly size offset (32/2) 
-        ft.y = event.y + 16f; 
+        ft.text = "+" + value;
+        // Position it near the top right, relative to the points label roughly
+        ft.x = 1050f; 
+        ft.y = 650f; 
         ft.timeAlive = 0;
         ft.label.setText(ft.text);
-        ft.label.setColor(event.fishColor); // Match color dynamically 
+        ft.label.setColor(Color.GOLD);
         ft.label.setPosition(ft.x, ft.y);
         activeFloatingTexts.add(ft);
         stage.addActor(ft.label);
